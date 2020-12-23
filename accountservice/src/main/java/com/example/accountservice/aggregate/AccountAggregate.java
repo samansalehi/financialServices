@@ -2,10 +2,10 @@ package com.example.accountservice.aggregate;
 
 import com.example.accountservice.commands.ActivateAccountCommand;
 import com.example.accountservice.commands.RegisterAccountCommand;
-import com.example.accountservice.commands.TransactionCreateCommand;
-import com.example.accountservice.entity.Account;
-import com.example.accountservice.entity.AccountStatus;
-import com.example.accountservice.entity.AccountType;
+import com.example.accountservice.commands.TransactionDepositCommand;
+import com.example.accountservice.entities.Account;
+import com.example.accountservice.entities.AccountStatus;
+import com.example.accountservice.entities.AccountType;
 import com.example.accountservice.events.AccountActivatedEvent;
 import com.example.accountservice.events.AccountCreateEvent;
 import com.example.accountservice.repository.AccountRepository;
@@ -55,7 +55,7 @@ public class AccountAggregate {
     @EventSourcingHandler
     public void createAccount(AccountCreateEvent accountCreateEvent) {
         if (accountCreateEvent.getBalance() > 0) {
-            AggregateLifecycle.apply(new TransactionCreateCommand(accountCreateEvent.getAccount_id(),
+            AggregateLifecycle.apply(new TransactionDepositCommand(accountCreateEvent.getAccount_id(),
                     accountCreateEvent.getBalance()));
             log.info("balance is {} so create Transaction and send to Transaction Service",
                     accountCreateEvent.getBalance());

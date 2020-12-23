@@ -1,4 +1,4 @@
-package com.example.accountservice.entity;
+package com.example.accountservice.entities;
 
 public enum AccountType {
     MASTER(1),VISA(2),BONE(3),CREDIT(4),DEBIT(5);

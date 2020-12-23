@@ -1,4 +1,4 @@
-package com.example.accountservice.entity;
+package com.example.accountservice.entities;
 
 import javax.persistence.*;
 import java.util.Date;

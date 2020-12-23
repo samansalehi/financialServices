@@ -10,5 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>accountservice</module>
+        <module>transactionservice</module>
     </modules>
 </project>

@@ -1,6 +1,4 @@
-package com.example.accountservice.entity.dto;
-
-import org.springframework.stereotype.Component;
+package com.example.accountservice.entities.dto;
 
 
 public class AccountRequest {

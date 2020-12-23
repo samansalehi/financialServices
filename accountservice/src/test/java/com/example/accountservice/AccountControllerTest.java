@@ -1,9 +1,7 @@
 package com.example.accountservice;
 
-import com.example.accountservice.entity.AccountStatus;
-import com.example.accountservice.entity.AccountType;
-import com.example.accountservice.entity.dto.AccountRequest;
-import com.example.accountservice.entity.dto.AccountResponse;
+import com.example.accountservice.entities.dto.AccountRequest;
+import com.example.accountservice.entities.dto.AccountResponse;
 import com.example.accountservice.services.AccountServices;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

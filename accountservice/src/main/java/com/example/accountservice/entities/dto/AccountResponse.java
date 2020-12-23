@@ -1,8 +1,7 @@
-package com.example.accountservice.entity.dto;
+package com.example.accountservice.entities.dto;
 
-import com.example.accountservice.entity.AccountStatus;
-import com.example.accountservice.entity.AccountType;
-import org.springframework.stereotype.Component;
+import com.example.accountservice.entities.AccountStatus;
+import com.example.accountservice.entities.AccountType;
 
 
 public class AccountResponse {
