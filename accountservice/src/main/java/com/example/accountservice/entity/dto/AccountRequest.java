@@ -7,6 +7,11 @@ public class AccountRequest {
     private long customer_id;
     private double balance;
 
+    public AccountRequest(long customer_id, double balance) {
+        this.customer_id = customer_id;
+        this.balance = balance;
+    }
+
     public long getCustomer_id() {
         return customer_id;
     }
