@@ -2,7 +2,7 @@ package com.example.accountservice;
 
 import com.example.accountservice.entities.dto.AccountRequest;
 import com.example.accountservice.entities.dto.AccountResponse;
-import com.example.accountservice.services.AccountServices;
+import com.example.accountservice.controller.AccountController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ public class AccountControllerTest {
     private int port;
 
     @Autowired
-    AccountServices accountServices;
+    AccountController accountController;
     @Autowired
     private TestRestTemplate restTemplate;
 
