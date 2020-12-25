@@ -1,21 +1,25 @@
 package com.example.accountservice.entities.dto;
 
 
+import com.example.commoncommands.Currency;
+
 public class AccountRequest {
-    private long customer_id;
+    private String customerId;
     private double balance;
+    private Currency currency;
 
-    public AccountRequest(long customer_id, double balance) {
-        this.customer_id = customer_id;
+    public AccountRequest(String customer_id, double balance, Currency currency) {
+        this.customerId = customer_id;
         this.balance = balance;
+        this.currency =currency;
     }
 
-    public long getCustomer_id() {
-        return customer_id;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer_id(long customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public double getBalance() {
@@ -24,5 +28,13 @@ public class AccountRequest {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 }

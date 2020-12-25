@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>EventSource example</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- POLYFILL: https://github.com/EventSource/eventsource -->
+<script src=/eventsource-polyfill.js></script>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/main.css" rel="stylesheet">
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/app.js"></script>
+</head>
+<body>
+  <noscript>
+    <h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable Javascript and reload this page!</h2>
+  </noscript>
+  <div id="main-content" class="container">
+
+    <div class="row">
+      <div class="col-sm-6">
+        <h3>Create Transaction</h3>
+        <form class="form">
+          <div class="form-group">
+            <label for="fromAccount">From Account</label> <input type="text" id="fromAccount" class="form-control" placeholder="Enter source account number">
+            <label for="toAccount">To Account</label> <input type="text" id="toAccount" class="form-control" placeholder="Enter destination account number">
+            <label for="amount">Amount</label> <input type="text" id="amount" class="form-control" placeholder="Amount of Transaction">
+          </div>
+          <button id="create-transaction" class="btn btn-default" type="submit">Create Transaction</button>
+        </form>
+      </div>
+      <div class="col-sm-6">
+        <h4>last id</h4>
+        <p class="lastbasketid"></p>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-12">
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="basketdetail">
+          <h3>Add Things to Basket</h3>
+          <p>Must be a unique name/description pair, for the given basket.</p>
+          <form class="form">
+            <div class="form-group">
+              <label for="thing-name">Name</label> <input type="text" id="thing-name" class="form-control" placeholder="Thing name..."> <label for="thing-description">Description</label> <input
+                type="text" id="thing-description" class="form-control" placeholder="Thing description...">
+            </div>
+            <button id="add-thing" class="btn btn-default" type="submit">Add Thing</button>
+          </form>
+        </div>
+        <hr>
+        <div>
+          <h3>Control Current Basket</h3>
+          <p>You may load any basket, provided you know its identifier</p>
+          <form class="form">
+            <div class="form-group">
+              <label for="subscribe-to-basket-id">Basket Identifier</label> <input type="text" id="subscribe-to-basket-id" class="form-control" placeholder="enter basket identifier...">
+            </div>
+            <button id="subscribe-to-basket" class="btn btn-default" type="submit">Load Basket</button>
+          </form>
+        </div>
+      </div>
+      <div id="updatelog" class="col-sm-6 streaming-result-container basketdetail"></div>
+    </div>
+
+
+    <div class="row baskettypelisting">
+      <div class="col-12">
+        <hr>
+      </div>
+    </div>
+    <div class="row baskettypelisting">
+      <div class="col-sm-6">
+        <h3>List Baskets by (partial) Type Name</h3>
+        <form class="form">
+          <div class="form-group">
+            <label for="basket-type-contains">Type Name</label> <input type="text" id="basket-type-contains" class="form-control" placeholder="enter any type name fragment...">
+          </div>
+          <button id="subscribe-to-basket-list-by-type" class="btn btn-default" type="submit">Filter</button>
+        </form>
+      </div>
+      <div id="baskettypelisting" class="col-sm-6 streaming-result-container"></div>
+    </div>
+
+  </div>
+</body>
+</html>

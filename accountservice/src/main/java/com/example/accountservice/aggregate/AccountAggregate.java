@@ -1,73 +1,97 @@
 package com.example.accountservice.aggregate;
 
-import com.example.accountservice.commands.ActivateAccountCommand;
-import com.example.accountservice.commands.RegisterAccountCommand;
-import com.example.accountservice.commands.TransactionDepositCommand;
-import com.example.accountservice.entities.Account;
+import com.example.accountservice.commands.*;
 import com.example.accountservice.entities.AccountStatus;
-import com.example.accountservice.entities.AccountType;
-import com.example.accountservice.events.AccountActivatedEvent;
-import com.example.accountservice.events.AccountCreateEvent;
-import com.example.accountservice.repository.AccountRepository;
-import com.example.accountservice.repository.CustomerRepository;
+import com.example.accountservice.events.*;
+import com.example.commoncommands.Currency;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 
-import java.util.Optional;
+import java.util.UUID;
 
 
 @Aggregate
 public class AccountAggregate {
     static final Logger log =
             LoggerFactory.getLogger(AccountAggregate.class);
-    @Autowired
-    private CustomerRepository customerRepository;
-    private AccountRepository accountRepository;
+    @AggregateIdentifier
+    private String id;
+    private String customerId;
+    private double balance;
+    private Currency curency;
+    private AccountStatus accountStatus;
 
-    @CommandHandler
-    public void createAccount(RegisterAccountCommand registerAccountCommand) {
-        Assert.notNull(registerAccountCommand.getCustomer_id(), "Customer ID should not be null");
-        Assert.notNull(customerRepository.
-                findById(registerAccountCommand.getCustomer_id()), "customer_id must be excist ");
-        Account account = accountRepository.save(createAccountEntity(registerAccountCommand));
-        AggregateLifecycle.apply(new AccountCreateEvent(registerAccountCommand.getCustomer_id(),
-                account.getId(), registerAccountCommand.getBalance()));
-        log.info("Account number {} is created.", account.getId());
+    public AccountAggregate() {
     }
 
     @CommandHandler
-    public void activateAccount(ActivateAccountCommand activateAccountCommand) {
-        Assert.notNull(activateAccountCommand.getAccount_id(), "Account ID must not Be null");
-        Optional<Account> account = accountRepository.findById(activateAccountCommand.getAccount_id());
-        account.get().setAccountStatus(AccountStatus.ACTIVE);
-        accountRepository.save(account.get());
-        AggregateLifecycle.apply(new AccountActivatedEvent(account.get().getId()));
-        log.info("Account number {} is Activated.", account.get().getId());
+    public AccountAggregate(CreateAccountCommand createAccountCommand) {
+        AggregateLifecycle.apply(new AccountCreatedEvent(createAccountCommand.id,
+                createAccountCommand.getAccountBalance(), createAccountCommand.getCurrency(),
+                createAccountCommand.getCustomerId()));
+    }
+
+    @EventSourcingHandler
+    protected void on(AccountCreatedEvent accountCreatedEvent) {
+        this.id = accountCreatedEvent.id;
+        this.balance = accountCreatedEvent.getAccountBalance();
+        this.curency = accountCreatedEvent.getCurrency();
+        this.accountStatus = AccountStatus.OPEN;
+        this.customerId = accountCreatedEvent.getCustomerId();
+        AggregateLifecycle.apply(new AccountActivatedEvent(this.id, AccountStatus.ACTIVE));
+        checkBalance(balance);
+    }
+
+    private void checkBalance(double balance) {
+        if (balance > 0) {
+            AggregateLifecycle.apply(new TransactionCreditEvent(UUID.randomUUID().toString(),
+                    this.id, this.customerId, this.balance,this.curency));
+        }
+    }
+
+    @EventSourcingHandler
+    protected void on(AccountActivatedEvent accountActivatedEvent) {
+        this.accountStatus = accountActivatedEvent.status;
+    }
+
+    @CommandHandler
+    protected void on(CreditMoneyCommand creditMoneyCommand) {
+        AggregateLifecycle.apply(new MoneyCreditedEvent(creditMoneyCommand.id, creditMoneyCommand.creditAmount, creditMoneyCommand.currency));
+    }
+
+    @EventSourcingHandler
+    protected void on(MoneyCreditedEvent moneyCreditedEvent) {
+
+        if (this.balance < 0 & (this.balance + moneyCreditedEvent.creditAmount) >= 0) {
+            AggregateLifecycle.apply(new AccountActivatedEvent(this.id, AccountStatus.ACTIVE));
+        }
+
+        this.balance += moneyCreditedEvent.creditAmount;
+    }
+
+    @CommandHandler
+    protected void on(DebitMoneyCommand debitMoneyCommand) {
+        AggregateLifecycle.apply(new MoneyDebitedEvent(debitMoneyCommand.id, debitMoneyCommand.debitAmount, debitMoneyCommand.currency));
+    }
+
+    @EventSourcingHandler
+    protected void on(MoneyDebitedEvent moneyDebitedEvent) {
+
+        if (this.balance >= 0 & (this.balance - moneyDebitedEvent.debitAmount) < 0) {
+            AggregateLifecycle.apply(new AccountHeldEvent(this.id, AccountStatus.PENDING));
+        }
+
+        this.balance -= moneyDebitedEvent.debitAmount;
 
     }
 
     @EventSourcingHandler
-    public void createAccount(AccountCreateEvent accountCreateEvent) {
-        if (accountCreateEvent.getBalance() > 0) {
-            AggregateLifecycle.apply(new TransactionDepositCommand(accountCreateEvent.getAccount_id(),
-                    accountCreateEvent.getBalance()));
-            log.info("balance is {} so create Transaction and send to Transaction Service",
-                    accountCreateEvent.getBalance());
-        }
-    }
-
-    private Account createAccountEntity(RegisterAccountCommand registerAccountCommand) {
-        Account account = new Account();
-        account.setAccountStatus(AccountStatus.OPEN);
-        account.setAccountType(AccountType.MASTER);
-        account.setCustomer_id(registerAccountCommand.getCustomer_id());
-        account.setBalance(registerAccountCommand.getBalance());
-        return account;
+    protected void on(AccountHeldEvent accountHeldEvent) {
+        this.accountStatus = accountHeldEvent.status;
     }
 }

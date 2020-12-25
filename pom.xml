@@ -12,6 +12,7 @@
         <module>accountservice</module>
         <module>transactionservice</module>
         <module>config-server</module>
+        <module>common-commands</module>
     </modules>
 
 </project>

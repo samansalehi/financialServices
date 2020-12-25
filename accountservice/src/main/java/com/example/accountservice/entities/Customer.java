@@ -7,9 +7,12 @@ import java.util.Date;
 @Table(name = "CUSTOMER")
 public class Customer {
     @Id
-    @Column(name = "customer_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Column(name = "customerId")
+    private String customerId;
 
     @Column(name = "name")
     private String name;
@@ -58,5 +61,13 @@ public class Customer {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 
 @Repository
-public interface CustomerRepository extends CrudRepository<Customer,Long> {
-
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
+    Customer findByCustomerId(String id);
 }

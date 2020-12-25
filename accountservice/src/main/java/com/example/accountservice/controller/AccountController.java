@@ -1,29 +1,37 @@
 package com.example.accountservice.controller;
 
-import com.example.accountservice.commands.RegisterAccountCommand;
-import com.example.accountservice.entities.AccountStatus;
-import com.example.accountservice.entities.AccountType;
+import com.example.accountservice.commands.CreateAccountCommand;
+import com.example.accountservice.entities.Account;
 import com.example.accountservice.entities.dto.AccountRequest;
-import com.example.accountservice.entities.dto.AccountResponse;
+import com.example.accountservice.services.AccountService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.queryhandling.QueryGateway;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/account")
 public class AccountController {
     private final CommandGateway commandGateway;
-    private final QueryGateway queryGateway;
-
-    public AccountController(CommandGateway commandGateway, QueryGateway queryGateway) {
+    private final AccountService accountService;
+    public AccountController(CommandGateway commandGateway,AccountService accountService) {
         this.commandGateway = commandGateway;
-        this.queryGateway = queryGateway;
+        this.accountService =accountService;
     }
 
     @RequestMapping(value = "/create",method = RequestMethod.POST,produces = "application/json")
     @ResponseBody
-    public AccountResponse createAccount(@RequestBody AccountRequest request) {
-        commandGateway.send(new RegisterAccountCommand(request.getCustomer_id(),request.getBalance()))
-        return new AccountResponse(1, AccountStatus.OPEN, AccountType.CREDIT);
+    public boolean createAccount(@RequestBody AccountRequest request) {
+        Assert.notNull(request.getCustomerId(),"Customer id shuld not be null");
+        commandGateway.send(new CreateAccountCommand(UUID.randomUUID().toString(),request.getBalance(),
+                request.getCurrency(),request.getCustomerId()));
+        return true;
+    }
+
+    @RequestMapping(value = "/getAccounts",method = RequestMethod.GET,produces = "application/json")
+    @ResponseBody
+    public Iterable<Account> createAccount() {
+       return accountService.getAccounts();
     }
 }

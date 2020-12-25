@@ -11,11 +11,11 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "fromAccount_id")
-    private long fromAccount_id;
+    @Column(name = "transactionId")
+    private String transactionId;
 
-    @Column(name = "toAccount_id")
-    private long toAccount_id;
+    @Column(name = "account_id")
+    private long account_id;
 
     @Column(name = "amount")
     private double amount;
@@ -32,22 +32,6 @@ public class Transaction {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getFromAccount_id() {
-        return fromAccount_id;
-    }
-
-    public void setFromAccount_id(long fromAccount_id) {
-        this.fromAccount_id = fromAccount_id;
-    }
-
-    public long getToAccount_id() {
-        return toAccount_id;
-    }
-
-    public void setToAccount_id(long toAccount_id) {
-        this.toAccount_id = toAccount_id;
     }
 
     public double getAmount() {
@@ -72,5 +56,21 @@ public class Transaction {
 
     public void setTransactionType(TransactionType transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public long getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(long account_id) {
+        this.account_id = account_id;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class DummyData {
@@ -18,6 +19,7 @@ public class DummyData {
         Customer customer;
         for (int i = 0; i < 10; i++) {
             customer= new Customer();
+            customer.setCustomerId(UUID.randomUUID().toString());
             customer.setName("Saman"+i);
             customer.setFamily("Salehi"+i);
             customer.setSurname("Sami" +i);

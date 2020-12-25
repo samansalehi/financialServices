@@ -3,6 +3,7 @@ package com.example.accountservice;
 import com.example.accountservice.entities.dto.AccountRequest;
 import com.example.accountservice.entities.dto.AccountResponse;
 import com.example.accountservice.controller.AccountController;
+import com.example.commoncommands.Currency;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +25,7 @@ public class AccountControllerTest {
     @Test
     public void createAccountShouldReturnDefult() throws Exception {
         assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/account/create"
-                ,new AccountRequest(1,100),AccountResponse.class).getAccount_id()).
+                ,new AccountRequest("121212",100, Currency.DOLLER),AccountResponse.class).getAccount_id()).
                 isNotNull();
     }
 

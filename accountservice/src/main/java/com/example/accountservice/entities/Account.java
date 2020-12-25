@@ -1,5 +1,7 @@
 package com.example.accountservice.entities;
 
+import com.example.commoncommands.Currency;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +13,10 @@ public class Account {
     private long id;
 
     @Column(name = "customer_id")
-    private long customer_id;
+    private String customerId;
+
+    @Column(name = "account_id")
+    private String accountId;
 
     @Column(name = "balance")
     private double balance;
@@ -22,6 +27,9 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
+
     public long getId() {
         return id;
     }
@@ -30,12 +38,12 @@ public class Account {
         this.id = id;
     }
 
-    public long getCustomer_id() {
-        return customer_id;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer_id(long customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomerId(String customer_id) {
+        this.customerId = customer_id;
     }
 
     public double getBalance() {
@@ -60,5 +68,21 @@ public class Account {
 
     public void setAccountStatus(AccountStatus accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String account_id) {
+        this.accountId = account_id;
     }
 }

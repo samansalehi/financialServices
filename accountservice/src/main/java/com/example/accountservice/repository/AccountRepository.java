@@ -4,7 +4,9 @@ import com.example.accountservice.entities.Account;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface AccountRepository extends CrudRepository<Account,Long> {
+import java.util.List;
 
+@Repository
+public interface AccountRepository extends CrudRepository<Account, Long> {
+    Account findByAccountId(String id);
 }
