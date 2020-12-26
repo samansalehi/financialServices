@@ -14,8 +14,8 @@ public class Transaction {
     @Column(name = "transactionId")
     private String transactionId;
 
-    @Column(name = "account_id")
-    private long account_id;
+    @Column(name = "accountId")
+    private String accountId;
 
     @Column(name = "amount")
     private double amount;
@@ -25,6 +25,9 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     TransactionType transactionType;
+
+    public Transaction() {
+    }
 
     public long getId() {
         return id;
@@ -66,11 +69,11 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public long getAccount_id() {
-        return account_id;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(long account_id) {
-        this.account_id = account_id;
+    public void setAccountId(String account_id) {
+        this.accountId = account_id;
     }
 }
