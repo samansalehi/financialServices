@@ -21,6 +21,18 @@ function createTransaction() {
   });
 }
 
+function customer_info() {
+  $.ajax({
+    url : '/customerByAccountId/' +$("#account_id").val(),
+    type : 'GET',
+    dataType: 'json',
+    success : function(data) {
+      $(".customer_name").text( data.name + ' ' + data.family );
+      $(".sure_name").text( data.surname);
+    },
+  });
+}
+
 function listBasketsByType() {
   var typePartial = $("#account_id").val();
   manageBasketsByTypeListUpdatesSubscription(typePartial);
@@ -77,5 +89,6 @@ $(function() {
   });
   $("#subscribe-to-basket-list-by-type").click(function(event) {
     listBasketsByType();
+    customer_info();
   });
 });

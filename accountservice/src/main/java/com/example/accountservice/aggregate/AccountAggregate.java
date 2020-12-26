@@ -50,7 +50,7 @@ public class AccountAggregate {
     private void checkBalance(double balance) {
         if (balance > 0) {
             AggregateLifecycle.apply(new TransactionCreditEvent(UUID.randomUUID().toString(),
-                    this.id, this.customerId, this.balance,this.curency));
+                     this.customerId,this.id, this.balance,this.curency));
         }
     }
 

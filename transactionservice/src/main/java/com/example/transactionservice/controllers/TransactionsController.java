@@ -1,9 +1,11 @@
-package com.example.transactionservice;
+package com.example.transactionservice.controllers;
 
 import com.example.commoncommands.TransactionCreditCommand;
+import com.example.transactionservice.dto.Account;
+import com.example.transactionservice.dto.Customer;
 import com.example.transactionservice.entities.Transaction;
 import com.example.transactionservice.queries.TransactionsByAccountIdQuery;
-import com.example.transactionservice.requests.CreateTransactionRequest;
+import com.example.transactionservice.dto.CreateTransactionRequest;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -27,10 +29,15 @@ public class TransactionsController {
 
     private final CommandGateway commandGateway;
     private final QueryGateway queryGateway;
+    private final AccountServicefeginClient accountServicefeginClient;
 
-    public TransactionsController(CommandGateway commandGateway,QueryGateway queryGateway) {
+
+    public TransactionsController(CommandGateway commandGateway,
+                                  QueryGateway queryGateway,
+                                  AccountServicefeginClient accountServicefeginClient) {
         this.commandGateway = commandGateway;
         this.queryGateway=queryGateway;
+        this.accountServicefeginClient = accountServicefeginClient;
     }
 
     @PostMapping(path = "credit", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +47,12 @@ public class TransactionsController {
                 requestBody.getAccountId(),requestBody.getCustomerId(),requestBody.getAmount(),requestBody.getCurrency()));
     }
 
+    @GetMapping(path = "/customerByAccountId/{id}" ,produces = "application/json")
+    public Customer customerByAccountId(@PathVariable String id, HttpServletRequest request) {
+        log(request);
+       Account account = accountServicefeginClient.accountById(id);
+       return accountServicefeginClient.findById(account.getCustomerId());
+    }
 
 
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

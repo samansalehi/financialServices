@@ -31,7 +31,13 @@ public class AccountController {
 
     @RequestMapping(value = "/getAccounts",method = RequestMethod.GET,produces = "application/json")
     @ResponseBody
-    public Iterable<Account> createAccount() {
+    public Iterable<Account> accounts() {
        return accountService.getAccounts();
+    }
+
+    @RequestMapping(value = "/accountById/{id}",method = RequestMethod.GET,produces = "application/json")
+    @ResponseBody
+    public Account accountById(@PathVariable String id) {
+        return accountService.findByAccountId(id);
     }
 }

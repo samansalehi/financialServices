@@ -49,13 +49,21 @@
     </div>
     <div class="row baskettypelisting">
       <div class="col-sm-6">
-        <h3>List All Transaction</h3>
+        <h3>Transaction list by account id</h3>
         <form class="form">
           <div class="form-group">
             <label for="account_id">Account Id</label> <input type="text" id="account_id" class="form-control" placeholder="enter any type name fragment...">
           </div>
           <button id="subscribe-to-basket-list-by-type" class="btn btn-default" type="submit">Transaction List</button>
         </form>
+      </div>
+      <div class="col-sm-6">
+        <h4>Customer Name:</h4>
+        <p class="customer_name"></p>
+      </div>
+      <div class="col-sm-6">
+        <h4>Sure Name:</h4>
+        <p class="sure_name"></p>
       </div>
       <table class="table">
         <thead>
@@ -65,8 +73,6 @@
           <th scope="col">customer Id</th>
           <th scope="col">Account ID</th>
           <th scope="col">Amount</th>
-          <th scope="col">Name</th>
-          <th scope="col">Family</th>
         </tr>
         </thead>
         <tbody id="baskettypelisting">

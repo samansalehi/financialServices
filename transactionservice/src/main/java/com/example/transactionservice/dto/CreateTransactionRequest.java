@@ -1,4 +1,4 @@
-package com.example.transactionservice.requests;
+package com.example.transactionservice.dto;
 
 import com.example.commoncommands.Currency;
 

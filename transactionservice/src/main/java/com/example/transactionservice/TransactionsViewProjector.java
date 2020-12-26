@@ -1,5 +1,7 @@
 package com.example.transactionservice;
 
+import com.example.transactionservice.controllers.AccountServicefeginClient;
+import com.example.transactionservice.dto.TransactionView;
 import com.example.transactionservice.entities.Transaction;
 import com.example.transactionservice.entities.TransactionType;
 import com.example.transactionservice.events.TransactionCreditEvent;
@@ -34,9 +36,9 @@ public class TransactionsViewProjector {
   private TransactionRepository repository;
   private QueryUpdateEmitter queryUpdateEmitter;
 
-
   @Autowired
-  public TransactionsViewProjector(TransactionRepository repository, QueryUpdateEmitter queryUpdateEmitter) {
+  public TransactionsViewProjector(TransactionRepository repository,
+                                   QueryUpdateEmitter queryUpdateEmitter) {
     this.repository = repository;
     this.queryUpdateEmitter = queryUpdateEmitter;
   }

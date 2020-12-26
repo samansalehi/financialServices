@@ -5,7 +5,7 @@ import com.example.accountservice.repository.CustomerRepository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping()
 public class CustomerController {
 
     private CustomerRepository customerRepository;
@@ -20,9 +20,9 @@ public class CustomerController {
         return customerRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/customer/{id}")
     @ResponseBody
-    public Customer findById(@PathVariable long id) {
-        return customerRepository.findById(id).get();
+    public Customer findById(@PathVariable String id) {
+        return customerRepository.findByCustomerId(id);
     }
 }

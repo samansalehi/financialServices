@@ -13,6 +13,7 @@
         <module>transactionservice</module>
         <module>config-server</module>
         <module>common-commands</module>
+        <module>eureka-server</module>
     </modules>
 
 </project>

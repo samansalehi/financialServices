@@ -60,21 +60,9 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    //    @EventHandler
-//    public void on(AccountCreateEvent accountCreateEvent)
-//    {
-//        log.info("Account number {} is created.", accountCreateEvent.getAccount_id());
-//    }
-//    @CommandHandler
-//    public void handle(ActivateAccountCommand activateAccountCommand) {
-//        Assert.notNull(activateAccountCommand.getAccount_id(), "Account ID must not Be null");
-//        Optional<Account> account = accountRepository.findById(activateAccountCommand.getAccount_id());
-//        account.get().setAccountStatus(AccountStatus.ACTIVE);
-//        accountRepository.save(account.get());
-//        AggregateLifecycle.apply(new AccountActivatedEvent(account.get().getId()));
-//        log.info("Account number {} is Activated.", account.get().getId());
-//
-//    }
+    public Account findByAccountId(String id) {
+        return accountRepository.findByAccountId(id);
+    }
 
     private Account createAccountEntity(AccountCreatedEvent accountCreatedEvent) {
         Account account = new Account();
