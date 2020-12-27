@@ -1,5 +1,7 @@
 package com.example.transactionservice.entities;
 
+import com.example.common.TransactionType;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -19,6 +21,9 @@ public class Transaction {
 
     @Column(name = "amount")
     private double amount;
+
+    @Column(name = "balance")
+    private double balance;
 
     @Column(name = "date")
     private Date date;
@@ -75,5 +80,13 @@ public class Transaction {
 
     public void setAccountId(String account_id) {
         this.accountId = account_id;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

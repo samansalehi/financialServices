@@ -1,14 +1,24 @@
 package com.example.accountservice.events;
 
+import com.example.common.Currency;
+
 public class MoneyCreditedEvent extends BaseEvent<String> {
 
-    public final double creditAmount;
+    private final double creditAmount;
+    private final Currency currency;
 
-    public final String currency;
-
-    public MoneyCreditedEvent(String id, double creditAmount, String currency) {
+    public MoneyCreditedEvent(String id, double creditAmount, Currency currency) {
         super(id);
         this.creditAmount = creditAmount;
         this.currency = currency;
+    }
+
+    public double getCreditAmount() {
+        return creditAmount;
+    }
+
+
+    public Currency getCurrency() {
+        return currency;
     }
 }

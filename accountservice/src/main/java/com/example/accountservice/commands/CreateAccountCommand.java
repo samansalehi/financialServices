@@ -1,8 +1,8 @@
 package com.example.accountservice.commands;
 
 
-import com.example.commoncommands.BaseCommand;
-import com.example.commoncommands.Currency;
+import com.example.common.commands.BaseCommand;
+import com.example.common.Currency;
 
 public class CreateAccountCommand extends BaseCommand<String> {
 

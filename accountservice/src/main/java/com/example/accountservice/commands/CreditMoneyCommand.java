@@ -1,16 +1,25 @@
 package com.example.accountservice.commands;
 
-import com.example.commoncommands.BaseCommand;
+import com.example.common.commands.BaseCommand;
+import com.example.common.Currency;
 
 public class CreditMoneyCommand extends BaseCommand<String> {
 
-    public final double creditAmount;
+    private final double creditAmount;
+    private final Currency currency;
 
-    public final String currency;
-
-    public CreditMoneyCommand(String id, double creditAmount, String currency) {
+    public CreditMoneyCommand(String id, double creditAmount, Currency currency) {
         super(id);
         this.creditAmount = creditAmount;
         this.currency = currency;
+    }
+
+    public double getCreditAmount() {
+        return creditAmount;
+    }
+
+
+    public Currency getCurrency() {
+        return currency;
     }
 }

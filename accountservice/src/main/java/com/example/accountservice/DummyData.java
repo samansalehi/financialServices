@@ -13,19 +13,34 @@ import java.util.UUID;
 public class DummyData {
     @Autowired
     CustomerRepository customerRepository;
+
     @PostConstruct
-    public void init()
-    {
+    public void init() {
         Customer customer;
-        for (int i = 0; i < 10; i++) {
-            customer= new Customer();
-            customer.setCustomerId(UUID.randomUUID().toString());
-            customer.setName("Saman"+i);
-            customer.setFamily("Salehi"+i);
-            customer.setSurname("Sami" +i);
-            customer.setDateOfBirth(new Date());
-            customerRepository.save(customer);
-        }
+        customer = new Customer();
+        customer.setCustomerId("1122000001");
+        customer.setName("Saman");
+        customer.setFamily("Salehi");
+        customer.setSurname("Sami");
+        customer.setDateOfBirth(new Date());
+        customerRepository.save(customer);
+
+        customer = new Customer();
+        customer.setCustomerId("1122000002");
+        customer.setName("Matin");
+        customer.setFamily("Abbasi");
+        customer.setSurname("Matin");
+        customer.setDateOfBirth(new Date());
+        customerRepository.save(customer);
+
+        customer = new Customer();
+        customer.setCustomerId("1122000003");
+        customer.setName("Armando");
+        customer.setFamily("Ramirez");
+        customer.setSurname("Armando");
+        customer.setDateOfBirth(new Date());
+        customerRepository.save(customer);
+
 
     }
 }

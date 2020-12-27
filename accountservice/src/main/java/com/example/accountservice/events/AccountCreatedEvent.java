@@ -1,7 +1,7 @@
 package com.example.accountservice.events;
 
 
-import com.example.commoncommands.Currency;
+import com.example.common.Currency;
 
 public class AccountCreatedEvent extends BaseEvent<String> {
 

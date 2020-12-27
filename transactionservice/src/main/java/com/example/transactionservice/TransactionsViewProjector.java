@@ -1,10 +1,8 @@
 package com.example.transactionservice;
 
-import com.example.transactionservice.controllers.AccountServicefeginClient;
-import com.example.transactionservice.dto.TransactionView;
 import com.example.transactionservice.entities.Transaction;
-import com.example.transactionservice.entities.TransactionType;
-import com.example.transactionservice.events.TransactionCreditEvent;
+import com.example.common.TransactionType;
+import com.example.common.events.TransactionEvent;
 import com.example.transactionservice.queries.AllTransactionQuery;
 import com.example.transactionservice.queries.TransactionByIdQuery;
 import com.example.transactionservice.queries.TransactionsByAccountIdQuery;
@@ -62,16 +60,18 @@ public class TransactionsViewProjector {
   }
 
   @EventHandler
-  public void on(TransactionCreditEvent event, @SequenceNumber long aggregateVersion, @Timestamp Instant occurrenceInstant) {
+  public void on(TransactionEvent event, @SequenceNumber long aggregateVersion, @Timestamp Instant occurrenceInstant) {
     Transaction view = new Transaction();
     view.setTransactionId(event.id);
-    view.setTransactionType(TransactionType.CASHDEPOSIT);
+    view.setTransactionType(event.getTransactionType());
     view.setAmount(event.getAmount());
+    view.setBalance(event.getBalance());
     view.setAccountId(event.getAccountId());
     view.setDate(new Date());
     save(view);
-    queryUpdateEmitter.emit(TransactionsByAccountIdQuery.class,query ->view.getAccountId().equals(event.getAccountId()) , view);
+    queryUpdateEmitter.emit(TransactionsByAccountIdQuery.class, query -> view.getAccountId().equals(event.getAccountId()), view);
   }
+
 
   private void save(Transaction transaction) {
     repository.save(transaction);

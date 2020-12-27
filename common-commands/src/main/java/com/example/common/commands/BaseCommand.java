@@ -1,4 +1,4 @@
-package com.example.commoncommands;
+package com.example.common.commands;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 

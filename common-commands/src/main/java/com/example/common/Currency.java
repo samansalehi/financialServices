@@ -1,4 +1,4 @@
-package com.example.commoncommands;
+package com.example.common;
 
 public enum Currency {
     DOLLER("DOLLER"), EURO("EURO"), RIAL("RIAL"), BITCOIN("BITCOIN");

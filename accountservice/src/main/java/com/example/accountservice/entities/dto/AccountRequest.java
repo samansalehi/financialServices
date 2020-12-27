@@ -1,7 +1,7 @@
 package com.example.accountservice.entities.dto;
 
 
-import com.example.commoncommands.Currency;
+import com.example.common.Currency;
 
 public class AccountRequest {
     private String customerId;

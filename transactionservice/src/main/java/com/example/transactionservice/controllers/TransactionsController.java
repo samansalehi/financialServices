@@ -1,11 +1,9 @@
 package com.example.transactionservice.controllers;
 
-import com.example.commoncommands.TransactionCreditCommand;
 import com.example.transactionservice.dto.Account;
-import com.example.transactionservice.dto.Customer;
+import com.example.transactionservice.dto.CustomerView;
 import com.example.transactionservice.entities.Transaction;
 import com.example.transactionservice.queries.TransactionsByAccountIdQuery;
-import com.example.transactionservice.dto.CreateTransactionRequest;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.queryhandling.QueryGateway;
@@ -19,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,18 +36,20 @@ public class TransactionsController {
         this.accountServicefeginClient = accountServicefeginClient;
     }
 
-    @PostMapping(path = "credit", consumes = MediaType.APPLICATION_JSON_VALUE)
+   /* @PostMapping(path = "credit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CompletableFuture<String> createTransaction(@RequestBody CreateTransactionRequest requestBody, HttpServletRequest request) {
         log(request);
         return commandGateway.send(new TransactionCreditCommand(UUID.randomUUID().toString(),
                 requestBody.getAccountId(),requestBody.getCustomerId(),requestBody.getAmount(),requestBody.getCurrency()));
-    }
+    }*/
 
-    @GetMapping(path = "/customerByAccountId/{id}" ,produces = "application/json")
-    public Customer customerByAccountId(@PathVariable String id, HttpServletRequest request) {
+    @GetMapping(path = "/customerByAccountId/{id}", produces = "application/json")
+    public CustomerView customerByAccountId(@PathVariable String id, HttpServletRequest request) {
         log(request);
-       Account account = accountServicefeginClient.accountById(id);
-       return accountServicefeginClient.findById(account.getCustomerId());
+        Account account = accountServicefeginClient.accountById(id);
+        CustomerView customerView = accountServicefeginClient.findById(account.getCustomerId());
+        customerView.setAccountBalance(account.getBalance());
+        return customerView;
     }
 
 

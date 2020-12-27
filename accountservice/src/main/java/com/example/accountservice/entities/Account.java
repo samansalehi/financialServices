@@ -1,6 +1,6 @@
 package com.example.accountservice.entities;
 
-import com.example.commoncommands.Currency;
+import com.example.common.Currency;
 
 import javax.persistence.*;
 

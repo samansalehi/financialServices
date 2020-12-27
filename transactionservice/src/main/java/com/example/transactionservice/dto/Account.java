@@ -1,8 +1,6 @@
 package com.example.transactionservice.dto;
 
-import com.example.commoncommands.Currency;
-
-import javax.persistence.*;
+import com.example.common.Currency;
 
 
 public class Account {

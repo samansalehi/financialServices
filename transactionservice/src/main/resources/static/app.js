@@ -56,11 +56,13 @@ function manageBasketsByTypeListUpdatesSubscription(typePartial) {
     var message;
     if (event.type === "message") {
       var data = JSON.parse(event.data);
-      message = '<tr> <td>' + data.id + '</td>'
-          +'<td>'+ data.date +'</td>'
-          +'<td>'+ data.transactionId + '</td>'
-          +'<td>'+ data.accountId + '</td>'
-          + '<td>' + data.amount + '</td></tr>';
+      message = '<tr>'
+          + '<td>' + data.date + '</td>'
+          + '<td>' + data.transactionId + '</td>'
+          + '<td>' + data.accountId + '</td>'
+          + '<td>' + data.amount + '</td>'
+          + '<td>' + data.balance + '</td>'
+          + '<td>' + data.transactionType + '</td></tr>';
     } else {
       message = '<div>' + basketListingEventStore.url + '</div>';
     }

@@ -1,6 +1,6 @@
 package com.example.transactionservice.dto;
 
-import com.example.commoncommands.Currency;
+import com.example.common.Currency;
 
 public class CreateTransactionRequest {
     private  String accountId;

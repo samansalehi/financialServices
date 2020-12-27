@@ -1,4 +1,4 @@
-package com.example.transactionservice.events;
+package com.example.common.events;
 
 public class BaseEvent<T> {
 

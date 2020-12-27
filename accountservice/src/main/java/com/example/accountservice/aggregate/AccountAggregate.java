@@ -3,7 +3,9 @@ package com.example.accountservice.aggregate;
 import com.example.accountservice.commands.*;
 import com.example.accountservice.entities.AccountStatus;
 import com.example.accountservice.events.*;
-import com.example.commoncommands.Currency;
+import com.example.common.Currency;
+import com.example.common.TransactionType;
+import com.example.common.events.TransactionEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -37,46 +39,53 @@ public class AccountAggregate {
     }
 
     @EventSourcingHandler
-    protected void on(AccountCreatedEvent accountCreatedEvent) {
-        this.id = accountCreatedEvent.id;
-        this.balance = accountCreatedEvent.getAccountBalance();
-        this.curency = accountCreatedEvent.getCurrency();
+    protected void on(AccountCreatedEvent event) {
+        log.info("AccountCreatedEvent is handled with id {}", event.id);
+        this.id = event.id;
+        this.balance = event.getAccountBalance();
+        this.curency = event.getCurrency();
+        this.accountStatus = AccountStatus.CREATE;
+        this.customerId = event.getCustomerId();
+        log.info("AccountCreatedEvent is handled with id {}", event.id);
         this.accountStatus = AccountStatus.OPEN;
-        this.customerId = accountCreatedEvent.getCustomerId();
-        AggregateLifecycle.apply(new AccountActivatedEvent(this.id, AccountStatus.ACTIVE));
-        checkBalance(balance);
+        AggregateLifecycle.apply(new AccountActivatedEvent(event.id, AccountStatus.ACTIVE));
     }
 
     private void checkBalance(double balance) {
         if (balance > 0) {
-            AggregateLifecycle.apply(new TransactionCreditEvent(UUID.randomUUID().toString(),
-                     this.customerId,this.id, this.balance,this.curency));
+            log.info("transaction balance {} > 0 so TransactionCreditEvent push", balance);
+            AggregateLifecycle.apply(new TransactionEvent(UUID.randomUUID().toString(), this.id,
+                    this.balance, this.balance, this.curency, TransactionType.CREDIT));
         }
     }
 
     @EventSourcingHandler
     protected void on(AccountActivatedEvent accountActivatedEvent) {
         this.accountStatus = accountActivatedEvent.status;
+//        checkBalance(balance);
     }
 
     @CommandHandler
     protected void on(CreditMoneyCommand creditMoneyCommand) {
-        AggregateLifecycle.apply(new MoneyCreditedEvent(creditMoneyCommand.id, creditMoneyCommand.creditAmount, creditMoneyCommand.currency));
+        log.info("CreditMoneyCommand is handled with id {}", creditMoneyCommand.id);
+        AggregateLifecycle.apply(new MoneyCreditedEvent(creditMoneyCommand.id, creditMoneyCommand.getCreditAmount(),
+                creditMoneyCommand.getCurrency()));
     }
 
     @EventSourcingHandler
     protected void on(MoneyCreditedEvent moneyCreditedEvent) {
-
-        if (this.balance < 0 & (this.balance + moneyCreditedEvent.creditAmount) >= 0) {
+        this.id = moneyCreditedEvent.id;
+        log.info("MoneyCreditedEvent is handled with id {}", moneyCreditedEvent.id);
+        if (this.balance < 0 & (this.balance + moneyCreditedEvent.getCreditAmount()) >= 0) {
             AggregateLifecycle.apply(new AccountActivatedEvent(this.id, AccountStatus.ACTIVE));
         }
-
-        this.balance += moneyCreditedEvent.creditAmount;
+        this.balance += moneyCreditedEvent.getCreditAmount();
     }
 
     @CommandHandler
     protected void on(DebitMoneyCommand debitMoneyCommand) {
-        AggregateLifecycle.apply(new MoneyDebitedEvent(debitMoneyCommand.id, debitMoneyCommand.debitAmount, debitMoneyCommand.currency));
+        AggregateLifecycle.apply(new MoneyDebitedEvent(debitMoneyCommand.id, debitMoneyCommand.getDebitAmount(),
+                debitMoneyCommand.getCurrency()));
     }
 
     @EventSourcingHandler
