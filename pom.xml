@@ -8,6 +8,12 @@
     <artifactId>financial-services</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
+    <modules>
+        <module>accountservice</module>
+        <module>transactionservice</module>
+        <module>config-server</module>
+        <module>common-commands</module>
+        <module>eureka-server</module>
+    </modules>
 
 </project>
