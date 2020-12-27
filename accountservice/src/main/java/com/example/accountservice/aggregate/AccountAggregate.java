@@ -90,7 +90,6 @@ public class AccountAggregate {
 
     @EventSourcingHandler
     protected void on(MoneyDebitedEvent moneyDebitedEvent) {
-
         if (this.balance >= 0 & (this.balance - moneyDebitedEvent.debitAmount) < 0) {
             AggregateLifecycle.apply(new AccountHeldEvent(this.id, AccountStatus.PENDING));
         }

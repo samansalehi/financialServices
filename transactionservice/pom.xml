@@ -15,12 +15,12 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<springfox.version>2.9.2</springfox.version>
-		<swagger-ui.version>2.9.2</swagger-ui.version>
-		<axon.version>4.0</axon.version>
-		<java.version>11</java.version>
-		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-	</properties>
+        <springfox.version>2.9.2</springfox.version>
+        <swagger-ui.version>2.9.2</swagger-ui.version>
+        <axon.version>4.0</axon.version>
+        <java.version>8</java.version>
+        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+    </properties>
 
 	<dependencies>
 		<dependency>

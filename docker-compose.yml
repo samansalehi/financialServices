@@ -1,0 +1,48 @@
+version: '3'
+services:
+  axonserver:
+    image: axoniq/axonserver:latest
+    ports:
+      - 8024:8024
+      - 8124:8124
+
+  config-server-app:
+    #build: .
+    image: config-server:latest
+    ports:
+      - 8888:8888
+    network_mode: "host"
+    volumes:
+      - /home/congig-repo:/home/config-repo
+
+  eureka-server-app:
+    #build: .
+    image: eureka-server:latest
+    ports:
+      - 8761:8761
+    network_mode: "host"
+    environment:
+      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n"
+
+
+  transaction-service-app:
+    #build: .
+    image: transaction-service:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - axonserver
+      - config-server-app
+      - eureka-server-app
+    network_mode: "host"
+
+  account-service-app:
+    #build: .
+    image: account-service:latest
+    ports:
+      - 8081:8081
+    depends_on:
+      - axonserver
+      - config-server-app
+      - eureka-server-app
+    network_mode: "host"
