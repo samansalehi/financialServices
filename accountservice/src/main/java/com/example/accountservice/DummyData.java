@@ -20,24 +20,21 @@ public class DummyData {
         customer = new Customer();
         customer.setCustomerId("1122000001");
         customer.setName("Saman");
-        customer.setFamily("Salehi");
-        customer.setSurname("Sami");
+        customer.setSurname("Salehi");
         customer.setDateOfBirth(new Date());
         customerRepository.save(customer);
 
         customer = new Customer();
         customer.setCustomerId("1122000002");
         customer.setName("Matin");
-        customer.setFamily("Abbasi");
-        customer.setSurname("Matin");
+        customer.setSurname("Abbasi");
         customer.setDateOfBirth(new Date());
         customerRepository.save(customer);
 
         customer = new Customer();
         customer.setCustomerId("1122000003");
         customer.setName("Armando");
-        customer.setFamily("Ramirez");
-        customer.setSurname("Armando");
+        customer.setSurname("Ramirez");
         customer.setDateOfBirth(new Date());
         customerRepository.save(customer);
 

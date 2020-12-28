@@ -16,10 +16,10 @@ public class Customer {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "surname")
     private String surname;
-    @Column(name = "family")
-    private String family;
+
     @Column(name = "dateOfBirth")
     private Date dateOfBirth;
 
@@ -47,13 +47,6 @@ public class Customer {
         this.surname = surname;
     }
 
-    public String getFamily() {
-        return family;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
-    }
 
     public Date getDateOfBirth() {
         return dateOfBirth;

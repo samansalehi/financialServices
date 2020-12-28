@@ -44,16 +44,19 @@ public class TransactionsViewProjector {
 
   @QueryHandler
   public Transaction handle(TransactionByIdQuery query) {
+    LOGGER.info("TransactionByIdQuery handled by {}", query.getTransaction_id());
     return repository.findTransactionByTransactionId(query.getTransaction_id());
   }
 
   @QueryHandler
   public List<Transaction> handle(TransactionsByAccountIdQuery query) {
+    LOGGER.info("Get list of transactions by account id {}", query.getAccountId());
     return StreamSupport.stream(repository.findAllByAccountId(query.getAccountId()).spliterator(), false).collect(Collectors.toList());
   }
 
   @QueryHandler
   public List<Transaction> handle(AllTransactionQuery query) {
+    LOGGER.info("AllTransactionQuery return all transactions");
     Example<Transaction> example = Example.of(new Transaction(),
         ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
     return StreamSupport.stream(repository.findAll().spliterator(), false).collect(Collectors.toList());
@@ -61,6 +64,7 @@ public class TransactionsViewProjector {
 
   @EventHandler
   public void on(TransactionEvent event, @SequenceNumber long aggregateVersion, @Timestamp Instant occurrenceInstant) {
+    LOGGER.info("TransactionEvent is handled by {}", event.id);
     Transaction view = new Transaction();
     view.setTransactionId(event.id);
     view.setTransactionType(event.getTransactionType());
@@ -69,15 +73,13 @@ public class TransactionsViewProjector {
     view.setAccountId(event.getAccountId());
     view.setDate(new Date());
     save(view);
-    queryUpdateEmitter.emit(TransactionsByAccountIdQuery.class, query -> view.getAccountId().equals(event.getAccountId()), view);
   }
 
 
   private void save(Transaction transaction) {
     repository.save(transaction);
-    LOGGER.info("emitting update: {}", transaction);
-
-    // emit the updated basket view to all subscribers
+    LOGGER.info("transaction persisted and emitted update by id {}", transaction.getId());
+    // emit the updated transaction view to all subscribers
     queryUpdateEmitter.emit(TransactionsByAccountIdQuery.class, query -> test(query, transaction), transaction);
   }
 
