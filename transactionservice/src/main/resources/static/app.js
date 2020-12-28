@@ -1,6 +1,4 @@
-var basketModleEventStore = undefined;
-var basketListingEventStore = undefined;
-var currentBasketId = undefined;
+var transactionListingEventStore = undefined;
 
 function createTransaction() {
   $.ajax({
@@ -9,7 +7,6 @@ function createTransaction() {
     success : function(data) {
       $("#subscribe-to-basket-id").val(data);
       $(".lastbasketid").text(data);
-      manageBasketViewModelUpdatesSubscription();
     },
     data : JSON.stringify({
       'accountId' : $("#accountId").val(),
@@ -27,32 +24,32 @@ function customer_info() {
     type : 'GET',
     dataType: 'json',
     success : function(data) {
-      $(".customer_name").text( data.name + ' ' + data.family );
-      $(".sure_name").text( data.surname);
+      $(".customer_name").text(data.name);
+      $(".sure_name").text(data.surname);
     },
   });
 }
 
-function listBasketsByType() {
+function listOfTransactionByAccountId() {
   var typePartial = $("#account_id").val();
   manageBasketsByTypeListUpdatesSubscription(typePartial);
 }
 
 function manageBasketsByTypeListUpdatesSubscription(typePartial) {
 
-  if (basketListingEventStore) {
-    basketListingEventStore.close();
-    basketListingEventStore = undefined;
+  if (transactionListingEventStore) {
+    transactionListingEventStore.close();
+    transactionListingEventStore = undefined;
   }
 
-  $("#baskettypelisting").html("");
-  basketListingEventStore = new EventSourcePolyfill('/all?id=' + typePartial,
+  $("#transaction_list").html("");
+  transactionListingEventStore = new EventSourcePolyfill('/all?id=' + typePartial,
       {
-        headers : {
-          authorization : 'bearer my.token.value'
+        headers: {
+          authorization: 'bearer my.token.value'
         }
       });
-  var listener = function(event) {
+  var listener = function (event) {
     var message;
     if (event.type === "message") {
       var data = JSON.parse(event.data);
@@ -63,34 +60,25 @@ function manageBasketsByTypeListUpdatesSubscription(typePartial) {
           + '<td>' + data.amount + '</td>'
           + '<td>' + data.balance + '</td>'
           + '<td>' + data.transactionType + '</td></tr>';
-    } else {
-      message = '<div>' + basketListingEventStore.url + '</div>';
     }
-    $("#baskettypelisting").prepend(message);
-    $(".listedbasket").click(function(event) {
-      $("#subscribe-to-basket-id").val($(event.target).attr("data-basket-id"));
-      manageBasketViewModelUpdatesSubscription();
-    });
+    $("#transaction_list").prepend(message);
   };
-  basketListingEventStore.addEventListener("open", listener);
-  basketListingEventStore.addEventListener("message", listener);
-  basketListingEventStore.addEventListener("error", listener);
+  transactionListingEventStore.addEventListener("open", listener);
+  transactionListingEventStore.addEventListener("message", listener);
+  transactionListingEventStore.addEventListener("error", listener);
 }
 
 $(function() {
 
-  $("form").on('submit', function(e) {
+  $("form").on('submit', function (e) {
     e.preventDefault();
   });
-  $("#create-transaction").click(function() {
+  $("#create-transaction").click(function () {
     createTransaction();
   });
 
-  $("#subscribe-to-basket").click(function() {
-    manageBasketViewModelUpdatesSubscription();
-  });
-  $("#subscribe-to-basket-list-by-type").click(function(event) {
-    listBasketsByType();
+  $("#transaction_list_by_account_id").click(function (event) {
+    listOfTransactionByAccountId();
     customer_info();
   });
 });

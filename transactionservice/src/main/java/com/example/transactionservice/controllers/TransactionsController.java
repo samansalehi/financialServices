@@ -36,13 +36,6 @@ public class TransactionsController {
         this.accountServicefeginClient = accountServicefeginClient;
     }
 
-   /* @PostMapping(path = "credit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CompletableFuture<String> createTransaction(@RequestBody CreateTransactionRequest requestBody, HttpServletRequest request) {
-        log(request);
-        return commandGateway.send(new TransactionCreditCommand(UUID.randomUUID().toString(),
-                requestBody.getAccountId(),requestBody.getCustomerId(),requestBody.getAmount(),requestBody.getCurrency()));
-    }*/
-
     @GetMapping(path = "/customerByAccountId/{id}", produces = "application/json")
     public CustomerView customerByAccountId(@PathVariable String id, HttpServletRequest request) {
         log(request);
@@ -55,6 +48,7 @@ public class TransactionsController {
 
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Transaction> ListUpdates(@RequestParam("id") String id, HttpServletRequest request) {
+        log(request);
         return Flux.<Transaction> create(emitter -> {
             SubscriptionQueryResult<List<Transaction>, Transaction> queryResult =
                     queryGateway.subscriptionQuery(new TransactionsByAccountIdQuery(id),

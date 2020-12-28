@@ -26,11 +26,12 @@ public class AccountController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public boolean createAccount(@RequestBody AccountRequest request) {
+    public String createAccount(@RequestBody AccountRequest request) {
         Assert.notNull(request.getCustomerId(), "Customer id should not be null");
-        commandGateway.send(new CreateAccountCommand(UUID.randomUUID().toString(), request.getBalance(),
+        String accountId = UUID.randomUUID().toString();
+        commandGateway.send(new CreateAccountCommand(accountId, request.getBalance(),
                 request.getCurrency(), request.getCustomerId()));
-        return true;
+        return accountId;
     }
 
     @RequestMapping(value = "/credit", method = RequestMethod.POST, produces = "application/json")
