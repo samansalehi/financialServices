@@ -99,13 +99,19 @@
 			<artifactId>jquery</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>common-commands</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>common-commands</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.axonframework</groupId>
+			<artifactId>axon-test</artifactId>
+			<version>4.0-RC2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

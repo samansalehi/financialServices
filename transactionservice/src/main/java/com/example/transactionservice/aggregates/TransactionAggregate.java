@@ -5,6 +5,7 @@ import com.example.common.TransactionType;
 import com.example.common.commands.TransactionCommand;
 import com.example.common.events.TransactionEvent;
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
@@ -26,6 +27,9 @@ public class TransactionAggregate {
     private Currency currency;
     private TransactionType transactionType;
 
+    public TransactionAggregate() {
+    }
+
     @CommandHandler
     public TransactionAggregate(TransactionCommand transactionCommand) {
         Assert.notNull(transactionCommand.getAmount(), "Transaction must have an amount");
@@ -37,6 +41,16 @@ public class TransactionAggregate {
         this.currency = transactionCommand.getCurrency();
         this.transactionType = transactionCommand.getTransactionType();
         AggregateLifecycle.apply(new TransactionEvent(id, accountId, balance, amount, currency, transactionType));
+    }
+
+    @EventSourcingHandler
+    public void on(TransactionEvent event) {
+        this.id = event.id;
+        this.accountId = event.getAccountId();
+        this.amount = event.getAmount();
+        this.balance = event.getBalance();
+        this.currency = event.getCurrency();
+        this.transactionType = event.getTransactionType();
     }
 
 

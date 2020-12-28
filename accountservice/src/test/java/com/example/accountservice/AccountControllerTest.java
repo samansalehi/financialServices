@@ -27,7 +27,7 @@ public class AccountControllerTest {
     public void createAccountForValidCustomerId() throws Exception {
         assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/account/create"
                 , new AccountRequest("121212", 100, Currency.DOLLER), AccountResponse.class).getAccount_id()).
-                isNotNull();
+                isEqualTo("121212");
     }
 
 }
