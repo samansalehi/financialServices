@@ -59,3 +59,5 @@ https://github.com/samansalehi/config-repo.git
 ```
 when you run the build.sh automatically clone this repo from the above url to the /home/config-rep to used by config-server.    
  
+#Attention
+if the config-server can not read the file from config-repo in docker container then the default port from the properties file is read.
