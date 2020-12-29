@@ -1,6 +1,6 @@
 # Simple Financial Services Event Sourcing App
 This simple app is design to show how microservice is communicate internally and how we can leverage the Axon Framework and spring-cloud to implement microservices.
-###Microservices List 
+##Microservices List 
 * accountservice for account handling [http://localhost:8081](http://localhost:8081)
 * transactionservice for transaction handling [http://localhost:8080](http://localhost:8080)
 * config-server for cloud configuration [http://localhost:8888](http://localhost:8888)
@@ -53,9 +53,11 @@ Also, you can point to the [transactionservice](http://localhost:8080/) and list
 After new account is created then you can debit and credit account by swagger rest webservices.
 when you credit or debit to the account then the transaction list in transaction service updated automatically by laverageing QuerySubscription in axon framework.
 #### config-repo
-config-repo is located in for running application manually 
+config-repo is located in: 
 ```
 https://github.com/samansalehi/config-repo.git
 ```
-   
+when you run the build.sh automatically clone this repo from the above url to the /home/config-rep to used by config-server.    
  
+#Attention
+if the config-server can not read the file from config-repo in docker container then the default port from the properties file is read.
