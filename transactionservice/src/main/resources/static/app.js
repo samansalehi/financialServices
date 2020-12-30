@@ -2,17 +2,16 @@ var transactionListingEventStore = undefined;
 
 function createTransaction() {
   $.ajax({
-    url : '/credit',
-    type : 'POST',
-    success : function(data) {
+    url: '/account/credit',
+    type: 'POST',
+    success: function (data) {
       $("#subscribe-to-basket-id").val(data);
       $(".lastbasketid").text(data);
     },
-    data : JSON.stringify({
-      'accountId' : $("#accountId").val(),
-      'customerId' : $("#customerId").val(),
-      'currency' : $("#currency").val(),
-      'amount' : $("#amount").val()
+    data: JSON.stringify({
+      'accountId': $("#accountId").val(),
+      'currency': $("#currency").val(),
+      'creditAmount': $("#amount").val()
     }),
     contentType : "application/json"
   });
